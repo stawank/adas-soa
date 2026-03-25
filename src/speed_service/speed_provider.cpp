@@ -36,7 +36,9 @@ class SpeedProvider{
             std::cout<<"Registered with routing manager"<<std::endl;
             app_->offer_service(0x1234, 0x0001);
             std::set<vsomeip::eventgroup_t> eventgroup = {0x0001};
-            app_->offer_event(0x1234, 0x0001, 0x8001, eventgroup, vsomeip::event_type_e::ET_FIELD);
+            app_->offer_event(0x1234, 0x0001, 0x8001, eventgroup, vsomeip::event_type_e::ET_EVENT);
+            std::vector<vsomeip::byte_t> initial_data(4);
+
             running_ = true;
 
             timer_thread_ = std::thread([this](){            

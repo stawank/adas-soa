@@ -1,0 +1,15 @@
+{
+    "unicast" : "127.0.0.1",
+    "logging" : {
+        "level" : "info",
+        "console" : "true"
+    },
+    "applications" : [
+        {
+            "name" : "SpeedProvider",
+            "id" : "0x0100"
+        }
+    ],
+    "routing" : "SpeedProvider" 
+
+}
