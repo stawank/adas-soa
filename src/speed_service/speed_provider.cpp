@@ -11,20 +11,33 @@ class SpeedProvider{
     std::shared_ptr<vsomeip::application> app_;
     std::thread timer_thread_;
     std::atomic<bool> running_;
+    std::uint32_t counter_;
     
     void send_speed_event(){
+        int pos = counter_ % 150;
+        float speed = 0.0f;
+        if(0<=pos && pos<50){
+            speed = pos;
+        }
+        else if(50<= pos && pos <= 100){
+            speed = 50;
+        }
+        else if(100< pos && pos <150){
+            speed = 149 -pos;
+        }
         
-        float speed = 65.5f;
         std::vector<vsomeip::byte_t> payload_data(4);
         memcpy(payload_data.data(), &speed, sizeof(speed));
         auto payload = runtime_->create_payload(payload_data);
         app_->notify(0x1234, 0x0001, 0x8001, payload);
+        
     }
     public:
     SpeedProvider(){
         runtime_ = vsomeip::runtime::get();
         app_ = runtime_->create_application("SpeedProvider"); 
         running_ = false;
+        counter_ = 0;
     }
 
     bool init(){
@@ -44,6 +57,7 @@ class SpeedProvider{
             timer_thread_ = std::thread([this](){            
                 while(running_){
                 send_speed_event();
+                counter_++;
                 std::this_thread::sleep_for(std::chrono::milliseconds(200));
                 };
                 }
