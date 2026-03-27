@@ -1,0 +1,18 @@
+import "/home/stawan/capicxx-someip-tools/org.genivi.commonapi.someip/deployment/CommonAPI-SOMEIP_deployment_spec.fdepl"
+import "VehicleSpeed.fidl"
+
+define org.genivi.commonapi.someip.deployment for interface v1.adas.VehicleSpeed {
+    SomeIpServiceID = 4660
+    
+    broadcast SpeedEvent {
+        SomeIpEventID = 32769
+        SomeIpEventGroups = { 1 }
+    }
+}
+
+define org.genivi.commonapi.someip.deployment for provider as Service {
+    instance v1.adas.VehicleSpeed {
+        InstanceId = "commonapi.adas.VehicleSpeed"
+        SomeIpInstanceID = 1
+    }
+}

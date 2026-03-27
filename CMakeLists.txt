@@ -15,14 +15,29 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(VSOMEIP_INCLUDE_DIR /usr/local/include)
 set(VSOMEIP_LIB_DIR /usr/local/lib)
+set(COMMONAPI_INCLUDE_DIR /usr/local/include/CommonAPI-3.2)
+set(COMMONAPI_LIB_DIR /usr/local/lib)
+set(GENERATED_DIR ${CMAKE_SOURCE_DIR}/fidl/generated)
 
-
+set(GENERATED_SOURCES
+    ${GENERATED_DIR}/v1/v1/adas/VehicleSpeedSomeIPDeployment.cpp
+    ${GENERATED_DIR}/v1/v1/adas/VehicleSpeedSomeIPStubAdapter.cpp
+    ${GENERATED_DIR}/v1/v1/adas/VehicleSpeedSomeIPProxy.cpp
+)
 
 link_directories(${VSOMEIP_LIB_DIR})
 # add the data to the target, so it becomes visible in some IDE
 add_executable(speed_provider src/speed_service/speed_provider.cpp)
 add_executable(speed_subscriber src/speed_service/speed_subscriber.cpp)
+add_executable(capi_speed_provider
+    src/capi_speed_service/capi_speed_provider.cpp
+    ${GENERATED_SOURCES}
+)
 
+add_executable(capi_speed_subscriber
+    src/capi_speed_service/capi_speed_subscriber.cpp
+    ${GENERATED_SOURCES}
+)
 
 # just for example add some compiler flags
 #target_compile_options()
@@ -37,7 +52,33 @@ target_include_directories(speed_subscriber PUBLIC
   ${VSOMEIP_INCLUDE_DIR})
 
 
+target_include_directories(capi_speed_provider PUBLIC
+    src/include
+    ${VSOMEIP_INCLUDE_DIR}
+    ${COMMONAPI_INCLUDE_DIR}
+    ${GENERATED_DIR}
+)
 
+target_include_directories(capi_speed_subscriber PUBLIC
+    src/include
+    ${VSOMEIP_INCLUDE_DIR}
+    ${COMMONAPI_INCLUDE_DIR}
+    ${GENERATED_DIR}
+)
+
+target_link_libraries(capi_speed_provider PUBLIC
+    vsomeip3
+    CommonAPI
+    CommonAPI-SomeIP
+    pthread
+)
+
+target_link_libraries(capi_speed_subscriber PUBLIC
+    vsomeip3
+    CommonAPI
+    CommonAPI-SomeIP
+    pthread
+)
 
 
 # this defines the variables Boost_LIBRARIES that contain all library names

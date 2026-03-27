@@ -1,0 +1,10 @@
+package v1.adas
+
+interface VehicleSpeed {
+    version { major 1 minor 0}
+
+    broadcast SpeedEvent {
+        out { Float speed}
+    }
+
+}
