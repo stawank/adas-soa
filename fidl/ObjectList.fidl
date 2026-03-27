@@ -1,0 +1,20 @@
+package v1.adas
+
+
+interface ObjectListService{
+    version {major 1 minor 0}
+
+    struct DetectedObject{
+        UInt32 ID
+        String type
+        Float distance
+        Float relative_velocity
+        Float time_to_collision
+    }
+
+    array DetectedObjectList of DetectedObject
+
+    broadcast ObjectsDetected {
+        out {DetectedObjectList objects}
+    }
+}

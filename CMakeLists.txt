@@ -19,10 +19,16 @@ set(COMMONAPI_INCLUDE_DIR /usr/local/include/CommonAPI-3.2)
 set(COMMONAPI_LIB_DIR /usr/local/lib)
 set(GENERATED_DIR ${CMAKE_SOURCE_DIR}/fidl/generated)
 
-set(GENERATED_SOURCES
+set(SPEED_GENERATED_SOURCES
     ${GENERATED_DIR}/v1/v1/adas/VehicleSpeedSomeIPDeployment.cpp
     ${GENERATED_DIR}/v1/v1/adas/VehicleSpeedSomeIPStubAdapter.cpp
     ${GENERATED_DIR}/v1/v1/adas/VehicleSpeedSomeIPProxy.cpp
+)
+
+set(OBJECTLIST_GENERATED_SOURCES
+    ${GENERATED_DIR}/v1/v1/adas/ObjectListServiceSomeIPDeployment.cpp
+    ${GENERATED_DIR}/v1/v1/adas/ObjectListServiceSomeIPStubAdapter.cpp
+    ${GENERATED_DIR}/v1/v1/adas/ObjectListServiceSomeIPProxy.cpp
 )
 
 link_directories(${VSOMEIP_LIB_DIR})
@@ -31,12 +37,22 @@ add_executable(speed_provider src/speed_service/speed_provider.cpp)
 add_executable(speed_subscriber src/speed_service/speed_subscriber.cpp)
 add_executable(capi_speed_provider
     src/capi_speed_service/capi_speed_provider.cpp
-    ${GENERATED_SOURCES}
+    ${SPEED_GENERATED_SOURCES}
 )
 
 add_executable(capi_speed_subscriber
     src/capi_speed_service/capi_speed_subscriber.cpp
-    ${GENERATED_SOURCES}
+    ${SPEED_GENERATED_SOURCES}
+)
+
+add_executable(capi_object_provider
+    src/capi_object_service/capi_object_provider.cpp
+    ${OBJECTLIST_GENERATED_SOURCES}
+)
+
+add_executable(capi_object_subscriber
+    src/capi_object_service/capi_object_subscriber.cpp
+    ${OBJECTLIST_GENERATED_SOURCES}
 )
 
 # just for example add some compiler flags
@@ -66,6 +82,20 @@ target_include_directories(capi_speed_subscriber PUBLIC
     ${GENERATED_DIR}
 )
 
+target_include_directories(capi_object_provider PUBLIC
+    src/include
+    ${VSOMEIP_INCLUDE_DIR}
+    ${COMMONAPI_INCLUDE_DIR}
+    ${GENERATED_DIR}
+)
+
+target_include_directories(capi_object_subscriber PUBLIC
+    src/include
+    ${VSOMEIP_INCLUDE_DIR}
+    ${COMMONAPI_INCLUDE_DIR}
+    ${GENERATED_DIR}
+)
+
 target_link_libraries(capi_speed_provider PUBLIC
     vsomeip3
     CommonAPI
@@ -74,6 +104,20 @@ target_link_libraries(capi_speed_provider PUBLIC
 )
 
 target_link_libraries(capi_speed_subscriber PUBLIC
+    vsomeip3
+    CommonAPI
+    CommonAPI-SomeIP
+    pthread
+)
+
+target_link_libraries(capi_object_provider PUBLIC
+    vsomeip3
+    CommonAPI
+    CommonAPI-SomeIP
+    pthread
+)
+
+target_link_libraries(capi_object_subscriber PUBLIC
     vsomeip3
     CommonAPI
     CommonAPI-SomeIP

@@ -1,0 +1,18 @@
+import "/home/stawan/capicxx-someip-tools/org.genivi.commonapi.someip/deployment/CommonAPI-SOMEIP_deployment_spec.fdepl"
+import "ObjectList.fidl"
+
+define org.genivi.commonapi.someip.deployment for interface v1.adas.ObjectListService {
+    SomeIpServiceID = 4661
+    
+    broadcast ObjectsDetected {
+        SomeIpEventID = 32770
+        SomeIpEventGroups = { 1 }
+    }
+}
+
+define org.genivi.commonapi.someip.deployment for provider as Service {
+    instance v1.adas.ObjectListService {
+        InstanceId = "commonapi.adas.ObjectListService"
+        SomeIpInstanceID = 1
+    }
+}
