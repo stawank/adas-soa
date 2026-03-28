@@ -1,0 +1,21 @@
+package v1.adas
+
+
+interface LaneInfo{
+    version {major 1 minor 0}
+
+    struct LaneData{
+        Float lane_offset_m
+        Float curvature_m
+        Boolean ldw_left
+        Boolean ldw_right
+        UInt8 lane_count
+    }
+
+
+    broadcast LaneUpdate {
+        out {LaneData lane}
+    }
+
+
+}

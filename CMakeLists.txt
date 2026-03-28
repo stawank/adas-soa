@@ -31,6 +31,12 @@ set(OBJECTLIST_GENERATED_SOURCES
     ${GENERATED_DIR}/v1/v1/adas/ObjectListServiceSomeIPProxy.cpp
 )
 
+set(LANEINFO_GENERATED_SOURCES
+    ${GENERATED_DIR}/v1/v1/adas/LaneInfoSomeIPDeployment.cpp
+    ${GENERATED_DIR}/v1/v1/adas/LaneInfoSomeIPStubAdapter.cpp
+    ${GENERATED_DIR}/v1/v1/adas/LaneInfoSomeIPProxy.cpp
+)
+
 link_directories(${VSOMEIP_LIB_DIR})
 # add the data to the target, so it becomes visible in some IDE
 add_executable(speed_provider src/speed_service/speed_provider.cpp)
@@ -53,6 +59,16 @@ add_executable(capi_object_provider
 add_executable(capi_object_subscriber
     src/capi_object_service/capi_object_subscriber.cpp
     ${OBJECTLIST_GENERATED_SOURCES}
+)
+
+add_executable(capi_lane_info_provider
+    src/capi_lane_info_service/capi_lane_info_provider.cpp
+    ${LANEINFO_GENERATED_SOURCES}
+)
+
+add_executable(capi_lane_info_subscriber
+    src/capi_lane_info_service/capi_lane_info_subscriber.cpp
+    ${LANEINFO_GENERATED_SOURCES}
 )
 
 # just for example add some compiler flags
@@ -96,6 +112,21 @@ target_include_directories(capi_object_subscriber PUBLIC
     ${GENERATED_DIR}
 )
 
+target_include_directories(capi_lane_info_provider PUBLIC
+    src/include
+    ${VSOMEIP_INCLUDE_DIR}
+    ${COMMONAPI_INCLUDE_DIR}
+    ${GENERATED_DIR}
+)
+
+target_include_directories(capi_lane_info_subscriber PUBLIC
+    src/include
+    ${VSOMEIP_INCLUDE_DIR}
+    ${COMMONAPI_INCLUDE_DIR}
+    ${GENERATED_DIR}
+)
+
+
 target_link_libraries(capi_speed_provider PUBLIC
     vsomeip3
     CommonAPI
@@ -118,6 +149,20 @@ target_link_libraries(capi_object_provider PUBLIC
 )
 
 target_link_libraries(capi_object_subscriber PUBLIC
+    vsomeip3
+    CommonAPI
+    CommonAPI-SomeIP
+    pthread
+)
+
+target_link_libraries(capi_lane_info_provider PUBLIC
+    vsomeip3
+    CommonAPI
+    CommonAPI-SomeIP
+    pthread
+)
+
+target_link_libraries(capi_lane_info_subscriber PUBLIC
     vsomeip3
     CommonAPI
     CommonAPI-SomeIP
