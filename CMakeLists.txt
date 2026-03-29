@@ -37,6 +37,14 @@ set(LANEINFO_GENERATED_SOURCES
     ${GENERATED_DIR}/v1/v1/adas/LaneInfoSomeIPProxy.cpp
 )
 
+set(COLLISIONWARNING_GENERATED_SOURCES
+    ${GENERATED_DIR}/v1/v1/adas/CollisionWarningSomeIPDeployment.cpp
+    ${GENERATED_DIR}/v1/v1/adas/CollisionWarningSomeIPStubAdapter.cpp
+    ${GENERATED_DIR}/v1/v1/adas/CollisionWarningSomeIPProxy.cpp
+)
+
+
+
 link_directories(${VSOMEIP_LIB_DIR})
 # add the data to the target, so it becomes visible in some IDE
 add_executable(speed_provider src/speed_service/speed_provider.cpp)
@@ -69,6 +77,16 @@ add_executable(capi_lane_info_provider
 add_executable(capi_lane_info_subscriber
     src/capi_lane_info_service/capi_lane_info_subscriber.cpp
     ${LANEINFO_GENERATED_SOURCES}
+)
+
+add_executable(capi_collision_warning_provider
+    src/capi_collision_warning_service/capi_collision_warning_provider.cpp
+    ${COLLISIONWARNING_GENERATED_SOURCES}
+)
+
+add_executable(capi_collision_warning_subscriber
+    src/capi_collision_warning_service/capi_collision_warning_subscriber.cpp
+    ${COLLISIONWARNING_GENERATED_SOURCES}
 )
 
 # just for example add some compiler flags
@@ -126,6 +144,20 @@ target_include_directories(capi_lane_info_subscriber PUBLIC
     ${GENERATED_DIR}
 )
 
+target_include_directories(capi_collision_warning_provider PUBLIC
+    src/include
+    ${VSOMEIP_INCLUDE_DIR}
+    ${COMMONAPI_INCLUDE_DIR}
+    ${GENERATED_DIR}
+)
+
+target_include_directories(capi_collision_warning_subscriber PUBLIC
+    src/include
+    ${VSOMEIP_INCLUDE_DIR}
+    ${COMMONAPI_INCLUDE_DIR}
+    ${GENERATED_DIR}
+)
+
 
 target_link_libraries(capi_speed_provider PUBLIC
     vsomeip3
@@ -163,6 +195,20 @@ target_link_libraries(capi_lane_info_provider PUBLIC
 )
 
 target_link_libraries(capi_lane_info_subscriber PUBLIC
+    vsomeip3
+    CommonAPI
+    CommonAPI-SomeIP
+    pthread
+)
+
+target_link_libraries(capi_collision_warning_provider PUBLIC
+    vsomeip3
+    CommonAPI
+    CommonAPI-SomeIP
+    pthread
+)
+
+target_link_libraries(capi_collision_warning_subscriber PUBLIC
     vsomeip3
     CommonAPI
     CommonAPI-SomeIP

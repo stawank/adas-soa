@@ -1,0 +1,23 @@
+import "/home/stawan/capicxx-someip-tools/org.genivi.commonapi.someip/deployment/CommonAPI-SOMEIP_deployment_spec.fdepl"
+import "CollisionWarning.fidl"
+
+define org.genivi.commonapi.someip.deployment for interface v1.adas.CollisionWarning {
+    SomeIpServiceID = 4663
+    
+    broadcast FCWAlert {
+        SomeIpEventID = 32772
+        SomeIpEventGroups = { 1 }
+    }
+
+    method SetTTCThreshold {
+        SomeIpMethodID = 1
+    }
+
+}
+
+define org.genivi.commonapi.someip.deployment for provider as Service {
+    instance v1.adas.CollisionWarning {
+        InstanceId = "commonapi.adas.CollisionWarning"
+        SomeIpInstanceID = 1
+    }
+}

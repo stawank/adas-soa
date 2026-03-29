@@ -1,0 +1,26 @@
+package v1.adas
+
+
+interface CollisionWarning{
+    version {major 1 minor 0}
+
+    enumeration Severity {
+        WARN=1
+        CRITICAL=2
+        EMERGENCY=3
+    }
+    
+    method SetTTCThreshold {
+        in  { Float thresholdSeconds }
+        out { Boolean accepted }
+    }
+
+    
+
+
+    broadcast FCWAlert {
+        out {Float ttc Severity severity_level UInt32 objectID}
+    }
+
+
+}
