@@ -1,0 +1,10 @@
+{
+    "unicast" : "127.0.0.1",
+    "logging" : {
+        "level" : "warning",
+        "console" : "false"
+    },
+    "applications" : [
+        { "name" : "ServiceMonitor", "id" : "0x0105" }
+    ]
+}

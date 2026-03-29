@@ -1,0 +1,7 @@
+{
+    "unicast" : "127.0.0.1",
+    "logging" : { "level" : "info", "console" : "true" },
+    "applications" : [
+        { "name" : "ObjectProvider", "id" : "0x0103" }
+    ]
+}
