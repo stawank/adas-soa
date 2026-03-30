@@ -10,6 +10,5 @@
             "id" : "0x0100"
         }
     ],
-    "routing" : "SpeedProvider" 
-
+    "routing" : "SpeedProvider"
 }
